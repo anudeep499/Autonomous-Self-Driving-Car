@@ -1,0 +1,149 @@
+amcl:
+  ros__parameters:
+    use_sim_time: False
+    alpha1: 0.2
+    alpha2: 0.2
+    alpha3: 0.2
+    alpha4: 0.2
+    alpha5: 0.2
+    base_frame_id: "base_link"
+    beam_skip_distance: 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+    global_frame_id: "map"
+    lambda_short: 0.1
+    laser_likelihood_max_dist: 2.0
+    laser_max_range: 100.0
+    laser_min_range: -1.0
+    laser_model_type: "likelihood_field"
+    max_beams: 60
+    max_particles: 2000
+    min_particles: 500
+    odom_frame_id: "odom"
+    pf_err: 0.05
+    pf_z: 0.99
+    recovery_alpha_fast: 0.0
+    recovery_alpha_slow: 0.0
+    resample_interval: 1
+    robot_model_type: "nav2_amcl::DifferentialMotionModel"   # or Ackermann if you change later
+    save_pose_rate: 0.5
+    sigma_hit: 0.2
+    tf_broadcast: true
+    transform_tolerance: 1.0
+    update_min_a: 0.2
+    update_min_d: 0.25
+    z_hit: 0.5
+    z_max: 0.05
+    z_rand: 0.5
+    z_short: 0.05
+    scan_topic: scan
+
+controller_server:
+  ros__parameters:
+    use_sim_time: False          # match your launch
+
+    use_controller: false
+    enabled: false
+    cmd_vel_topic: "nav2_cmd_vel"
+    controller_frequency: 20.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+    failure_tolerance: 0.3
+
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["general_goal_checker"]
+    controller_plugins: ["FollowPath"]
+
+    # Progress checker parameters
+    progress_checker:
+      plugin: "nav2_controller::SimpleProgressChecker"
+      required_movement_radius: 0.5
+      movement_time_allowance: 10.0
+
+    # Goal checker parameters
+    general_goal_checker:
+      stateful: True
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.25
+      yaw_goal_tolerance: 0.25
+
+    # Regulated Pure Pursuit controller (Ackermann-friendly)
+    FollowPath:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+
+      # Speeds
+      desired_linear_vel: 0.3
+      max_speed_xy: 0.3
+      min_speed_xy: 0.05
+
+      # Lookahead & path following
+      lookahead_dist: 0.2
+      min_lookahead_dist: 0.1
+      max_lookahead_dist: 0.5
+      lookahead_time: 0.0
+      use_velocity_scaled_lookahead_dist: false
+
+      # Ackermann: no rotate-in-place
+      use_rotate_to_heading: false
+      allow_reversing: false
+      rotate_to_heading_angular_vel: 0.0
+      rotate_to_heading_min_angle: 0.785
+
+      # Approach behavior
+      min_approach_linear_velocity: 0.05
+      approach_velocity_scaling_dist: 0.6
+
+      # Collision & regulation
+      use_collision_detection: true
+      max_allowed_time_to_collision_up_to_carrot: 1.0
+      use_regulated_linear_velocity_scaling: true
+      use_cost_regulated_linear_velocity_scaling: false
+      regulated_linear_scaling_min_radius: 0.9
+      regulated_linear_scaling_min_speed: 0.25
+
+      # Smooth steering
+      max_angular_accel: 1.0
+      max_robot_pose_search_dist: 10.0
+      transform_tolerance: 0.2
+      use_interpolation: true
+
+map_server:
+  ros__parameters:
+    use_sim_time: False
+    yaml_filename: "/home/tne/maps/my_map.yaml"
+
+map_saver:
+  ros__parameters:
+    use_sim_time: False
+    save_map_timeout: 5.0
+    free_thresh_default: 0.25
+    occupied_thresh_default: 0.65
+    map_subscribe_transient_local: True
+
+behavior_server:
+  ros__parameters:
+    enabled: false
+
+velocity_smoother:
+  ros__parameters:
+    enabled: false
+
+collision_monitor:
+  ros__parameters:
+    enabled: false
+
+robot_state_publisher:
+  ros__parameters:
+    use_sim_time: False
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      inflation_layer:
+        inflation_radius: 1.0
+        cost_scaling_factor: 2.0
+      robot_radius: 0.5
+      
+

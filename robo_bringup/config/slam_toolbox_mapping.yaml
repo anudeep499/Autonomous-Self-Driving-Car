@@ -1,0 +1,34 @@
+slam_toolbox:
+  ros__parameters:
+    # General
+    # solver_plugin: solver_plugin::CeresSolver
+
+    use_sim_time: false
+
+    # Frames
+    odom_frame: "odom"
+    map_frame: "map"
+    base_frame: "base_link"
+
+    # Sensors
+    scan_topic: "/scan"
+
+    # Mode
+    mode: "mapping"   # important: stays in mapping mode
+
+    # Basic tuning (start with defaults)
+    resolution: 0.05
+    max_laser_range: 10.0
+    minimum_time_interval: 0.0
+    transform_publish_period: 0.02
+
+    map_update_interval: 2.0
+
+    # Optimization
+    loop_closure: true
+    do_loop_closing: true
+
+    # Tuning
+    minimum_travel_distance: 0.2
+    minimum_travel_heading: 0.2
+    use_scan_matching: true
