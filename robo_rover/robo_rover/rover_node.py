@@ -21,7 +21,7 @@ class ArduPilotRoverNode(Node):
     def __init__(self):
         super().__init__('rover_node')
         
-        # Parameters
+        #Parameters
         self.declare_parameter('connection_string', '/dev/ttyACM1')
         self.declare_parameter('baud_rate', 115200)
         self.declare_parameter('control_frequency', 20.0)
