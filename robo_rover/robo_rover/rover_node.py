@@ -10,6 +10,7 @@ from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Imu
 from std_msgs.msg import Bool
+from rover_msgs.msg import RoverActuatorCmd
 import time
 import threading
 from pymavlink import mavutil
@@ -67,8 +68,10 @@ class ArduPilotRoverNode(Node):
         self.armed_pub = self.create_publisher(Bool, 'rover/armed', control_qos)
         
         # Subscribers
+        #self.cmd_sub = self.create_subscription(
+            # Twist, 'rover_vel', self.cmd_vel_callback, control_qos)
         self.cmd_sub = self.create_subscription(
-            Twist, 'rover_vel', self.cmd_vel_callback, control_qos)
+    RoverActuatorCmd, '/rover_actuator_cmd', self.actuator_callback, control_qos)
         
         # Timers
         self.control_timer = self.create_timer(
