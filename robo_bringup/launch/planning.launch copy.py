@@ -71,7 +71,7 @@ def generate_launch_description():
         }],
     )
 
-    # Your custom follower – only thing that publishes /cmd_vel
+    # Your custom follower only thing that publishes /cmd_vel
     # path_follower = Node(
     #     package='goal_follower',
     #     executable='path_follower',
